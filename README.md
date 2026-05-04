@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# occult-ui
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Front-end for the [Occult](https://github.com/Occult-fi/occult) confidential batch-auction AMM on Solana.
 
-Currently, two official plugins are available:
+Pure client-side React app. No backend, no server-side rendering — proof generation happens in the browser via [`occult-wasm`](https://github.com/Occult-fi/occult-wasm), wallet signing via standard Solana wallet adapters.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+- Vite 7 + React 18 + TypeScript
+- `@solana/web3.js`, `@solana/wallet-adapter-*`
+- `react-router-dom` for routing (`/`, `/demo`, `/soon`)
+- `comlink` for offloading WASM proof generation to a WebWorker
+- `occult-wasm` for ZK proof generation (planned, currently mocked in `/demo`)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm install
+pnpm dev          # http://localhost:5173
+pnpm build        # static dist/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Set the RPC endpoint via env:
+```bash
+VITE_RPC_URL=http://127.0.0.1:8899 pnpm dev
+# or devnet:
+VITE_RPC_URL=https://api.devnet.solana.com pnpm build
 ```
+
+## Pages
+
+- **`/`** — Landing. Hero with the redacted "seen." headline, problem comparison, three-step explainer, animated swap demo, technology grid, footer.
+- **`/demo`** — Live demo. Encrypted orderbook (sealed sizes), swap card with wallet-adapter integration, batch progress bar in the header. Currently simulates the encrypt → queue → settle → seal sequence; the real flow lands when `occult-wasm` is plugged in.
+- **`/soon`** — placeholder.
+
+## Design system
+
+- pure black ground (`#000`) + hairline whites
+- redaction bar accent (`#1d1d1f`) — segmented, hover-to-reveal
+- SF Pro Display / SF Mono via system stack
+- 1440px page width, 160px section padding (compact: 96px)
+- single-color, no gradients, no warm accent
+
+See `src/landing.css` and `src/demo.css` for the full token system.
+
+## License
+
+Apache-2.0.
