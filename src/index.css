@@ -1,4 +1,14 @@
 /* Imports happen per-page so each route loads only its CSS bundle. */
+html {
+  /*
+   * Global ~6% upscale to match the original design preview's perceived size.
+   * `zoom` (vs transform: scale) keeps fixed/sticky positioning, scrollbars
+   * and click hit-tests honest. Supported in Chromium/Safari and (since 2024)
+   * Firefox.
+   */
+  zoom: 1.06;
+}
+
 html, body, #root {
   margin: 0;
   padding: 0;

@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Redacted from '../components/Redacted';
+import { loadState } from '../protocol/state';
+import { classifyNetwork, networkLabel } from '../protocol/network';
 import '../landing.css';
 
-// ---------------------------------------------------------------------------
-// Top nav
-// ---------------------------------------------------------------------------
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -39,14 +38,27 @@ function Nav() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Hero
-// ---------------------------------------------------------------------------
 function Hero() {
   const [armed, setArmed] = useState(false);
+  const [chainLabel, setChainLabel] = useState('Solana');
   useEffect(() => {
     const t = setTimeout(() => setArmed(true), 60);
     return () => clearTimeout(t);
+  }, []);
+  // Best-effort: peek at /state.json so the hero meta-row reflects the
+  // actual network the deployed UI is bound to. If the file isn't there
+  // (mismatched build, no localnet bootstrap), keep the bare "Solana".
+  useEffect(() => {
+    loadState()
+      .then((s) => {
+        const kind = classifyNetwork(s.rpcUrl);
+        const label = networkLabel(kind);
+        const titleCase = label.charAt(0) + label.slice(1).toLowerCase();
+        setChainLabel(`Solana · ${titleCase}`);
+      })
+      .catch(() => {
+        // intentional no-op: landing should render without state.json.
+      });
   }, []);
 
   return (
@@ -102,7 +114,7 @@ function Hero() {
           </div>
           <div className="hero__meta-row">
             <span className="hero__meta-k">CHAIN</span>
-            <span className="hero__meta-v">Solana · Devnet</span>
+            <span className="hero__meta-v">{chainLabel}</span>
           </div>
           <div className="hero__meta-row">
             <span className="hero__meta-k">EPOCH</span>
@@ -122,9 +134,6 @@ function Hero() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Problem section
-// ---------------------------------------------------------------------------
 type Row = { address: string; asset: string; amount: string; time: string };
 
 function ProblemRow({
@@ -264,9 +273,6 @@ function Problem() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// How it works
-// ---------------------------------------------------------------------------
 type IconKind = 'encrypt' | 'batch' | 'verify';
 
 function StepIcon({ kind }: { kind: IconKind }) {
@@ -405,9 +411,6 @@ function HowItWorks() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Live swap demo (animated)
-// ---------------------------------------------------------------------------
 type SwapPhase = 'idle' | 'typing' | 'signing' | 'broadcast' | 'sealed';
 
 function toUsdc(amt: string) {
@@ -602,9 +605,6 @@ function SwapDemo() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Tech section
-// ---------------------------------------------------------------------------
 function Tech() {
   const items = [
     { k: '01', title: 'Native Rust', body: 'Built directly on Solana\'s BPF runtime. No EVM, no transpilation, no abstraction tax. ~7k CU per swap submit.' },
@@ -650,9 +650,6 @@ function Tech() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Footer
-// ---------------------------------------------------------------------------
 function Footer() {
   return (
     <footer className="footer">

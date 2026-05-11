@@ -9,11 +9,6 @@ export type RedactedProps = {
   style?: CSSProperties;
 };
 
-/**
- * Segmented redaction bar — the protocol's signature visual element.
- * On hover (when not sealed) wipes briefly to reveal the underlying text,
- * then re-redacts after 1.4s.
- */
 export default function Redacted({
   children,
   segments = 3,

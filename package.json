@@ -7,21 +7,28 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gen:idl": "cd ../occult && shank idl -r programs/occult-amm -o idl -p 4vTNEf7bpNoYXQJPtQNFYaRxJ8tnvNmSwHW6iAUcz4Gq",
+    "gen:client": "node scripts/gen-client.cjs",
+    "gen": "pnpm gen:idl && pnpm gen:client"
   },
   "dependencies": {
+    "@metaplex-foundation/beet": "^0.7.2",
+    "@metaplex-foundation/beet-solana": "^0.4.1",
     "@solana/wallet-adapter-base": "^0.9.27",
     "@solana/wallet-adapter-react": "^0.15.39",
     "@solana/wallet-adapter-react-ui": "^0.9.39",
     "@solana/wallet-adapter-wallets": "^0.19.38",
     "@solana/web3.js": "^1.98.4",
     "comlink": "^4.4.2",
+    "occult-wasm": "file:../occult-wasm/pkg",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.14.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@metaplex-foundation/solita": "^0.20.1",
     "@types/node": "^24.12.2",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
