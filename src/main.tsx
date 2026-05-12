@@ -1,3 +1,6 @@
+import { Buffer } from 'buffer';
+(globalThis as unknown as { Buffer: typeof Buffer }).Buffer = Buffer;
+
 import { StrictMode, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
