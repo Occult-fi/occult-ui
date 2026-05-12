@@ -1114,7 +1114,8 @@ export default function Demo() {
   const [activePoolId, setActivePoolId] = useState<string | null>(null);
   const [state, setState] = useState<OccultState | null>(null);
   const [stateError, setStateError] = useState<string | null>(null);
-  const networkKind: NetworkKind = state ? classifyNetwork(state.rpcUrl) : 'unknown';
+  const publicRpcUrl = (import.meta.env.VITE_RPC_URL as string | undefined) ?? state?.rpcUrl;
+  const networkKind: NetworkKind = publicRpcUrl ? classifyNetwork(publicRpcUrl) : 'unknown';
   const networkLabelText = networkLabel(networkKind);
 
   const [batchN, setBatchN] = useState(8424);
@@ -1635,7 +1636,7 @@ export default function Demo() {
           </div>
         </div>
 
-        <MyTxs txs={txs} networkKind={networkKind} rpcUrl={state?.rpcUrl} />
+        <MyTxs txs={txs} networkKind={networkKind} rpcUrl={publicRpcUrl} />
 
         <Balances
           balances={(() => {

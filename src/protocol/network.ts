@@ -2,7 +2,12 @@ export type NetworkKind = 'localnet' | 'devnet' | 'testnet' | 'mainnet' | 'unkno
 
 export function classifyNetwork(rpcUrl: string): NetworkKind {
   const u = rpcUrl.toLowerCase();
-  if (u.includes('localhost') || u.includes('127.0.0.1') || u.includes('://0.0.0.0')) {
+  if (
+    u.includes('localhost') ||
+    u.includes('127.0.0.1') ||
+    u.includes('://0.0.0.0') ||
+    u.includes('localnet.')
+  ) {
     return 'localnet';
   }
   if (u.includes('devnet')) return 'devnet';
