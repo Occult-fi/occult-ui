@@ -1449,7 +1449,7 @@ export default function Pools() {
   const poolFilters = useMemo(
     () => ({
       filters: [
-        { dataSize: 376 },
+        { dataSize: 440 },
         { memcmp: { offset: 0, bytes: '2' } },
       ],
     }),

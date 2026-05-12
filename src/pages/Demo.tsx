@@ -1390,8 +1390,7 @@ export default function Demo() {
   const poolFilters = useMemo(
     () => ({
       filters: [
-        // Pool struct = 376 bytes; memcmp '2' = base58 of [0x01] = Pool tag.
-        { dataSize: 376 },
+        { dataSize: 440 },
         { memcmp: { offset: 0, bytes: '2' } },
       ],
     }),
