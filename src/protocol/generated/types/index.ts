@@ -6,7 +6,6 @@ export * from './InitLpMintArgs';
 export * from './InitPoolArgs';
 export * from './InitVaultArgs';
 export * from './InitWrapperArgs';
-export * from './LpDepositRequestArgs';
 export * from './RemoveLiquidityArgs';
 export * from './SetReservesArgs';
 export * from './SubmitOrderArgs';

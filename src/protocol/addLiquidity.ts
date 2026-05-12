@@ -354,6 +354,4 @@ async function sendTx(
   return sig;
 }
 
-// Suppress unused-import lint for SystemProgram (kept for future explicit
-// system-program ix slots in the request path).
-const _ = SystemProgram;
+void SystemProgram;
